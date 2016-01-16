@@ -50,7 +50,4 @@ Node* reverse(Node* head);
  */
 int cycle_size(Node* head);
 
-//clean later
-void print(Node* head);
-
 #endif // _LIST_HPP_

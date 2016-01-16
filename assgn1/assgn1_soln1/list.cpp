@@ -1,7 +1,4 @@
 #include "list.hpp"
-//clean later
-#include <iostream>
-using namespace std;
 
 Node* insert(Node* head, int val, int pos)
 {
@@ -79,17 +76,28 @@ Node* reverse(Node* head)
 
 int cycle_size(Node* head)
 {
-    return 0;
-}
+    /* Floyd's cycle finding algorithm
+     * start with two pointers
+     * increment the first by one, second by two
+     * if they meet, cycle found
+     * now traverse cycle once for length
+     */
 
-//clearn later
-void print(Node* head)
-{
-    int iter = 0;
-    for(Node*ptr=head;ptr!=NULL && iter<20;ptr=ptr->getNext())
+    int length = 0;
+    Node *ptr1=head,*ptr2=head;
+    while(ptr1!=NULL && ptr2!=NULL)
     {
-        cout << ptr->getVal() << " ";
-        iter++;
-    }
-    cout << endl;
+        ptr1 = ptr1->getNext();
+        ptr2 = ptr2->getNext()->getNext();
+        if(ptr1==ptr2)
+        {
+            do
+            {
+                ptr2=ptr2->getNext();
+                length++;
+            } while(ptr1!=ptr2);
+            break;
+        }
+    }    
+    return length;
 }
