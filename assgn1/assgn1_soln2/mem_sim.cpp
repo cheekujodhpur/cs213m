@@ -17,7 +17,7 @@ int main()
     cin >> n >> p >> m;
 
     int *counts;    //store number of references for each page id
-    counts = new int[n+1];
+    counts = new int[2*n+1];
     for(int i = 1;i<=n;i++)
         counts[i]=0;
 
@@ -32,8 +32,6 @@ int main()
         //check if element in list
         if(find(L.begin(),L.end(),m_ref)==L.end())
         {
-            cout << *find(L.begin(),L.end(),m_ref) << " " << *(L.end()) << endl;
-            cout << L.size() << endl;
             //we missed
             count_miss++;  
 
@@ -43,16 +41,37 @@ int main()
                 //we can still push
                 L.push_back(m_ref);
                 counts[m_ref]++;
+                counts[n+m_ref]=i;
             }
             else
             {
+                list<int>::iterator ptr,min_ptr;
+                min_ptr = L.begin();
+                for(ptr=L.begin();ptr!=L.end();ptr++)
+                {
+                    //lfu
+                    if(counts[*min_ptr]>counts[*ptr])
+                    {
+                        min_ptr=ptr;
+                    }
+                    else if(counts[*min_ptr]==counts[*ptr])
+                    {
+                        //lru
+                        if(counts[n+*min_ptr]>counts[n+*ptr])
+                            min_ptr=ptr;
+                    }
+                }
                 //we need to swap
+                *min_ptr=m_ref;
+                counts[m_ref]++;
+                counts[n+m_ref]=i;
             }
         }
         else
         {
             count_hit++;    //we hit something
             counts[m_ref]++; //re-referenced
+            counts[n+m_ref]=i;
         }
     }
 
