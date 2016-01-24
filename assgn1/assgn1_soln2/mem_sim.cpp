@@ -62,6 +62,7 @@ int main()
                     }
                 }
                 //we need to swap
+                counts[*min_ptr]=0;
                 *min_ptr=m_ref;
                 counts[m_ref]++;
                 counts[n+m_ref]=i;
