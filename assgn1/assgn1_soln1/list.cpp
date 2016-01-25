@@ -57,7 +57,9 @@ int size(Node* head)
 Node* reverse(Node* head)
 {
     //suppose there were only two elements
-    if(size(head)<=2)
+    if(size(head)==0)
+        return head;
+    else if(size(head)<=2)
     {
         head->getNext()->setNext(head);
         head = head->getNext();
