@@ -32,7 +32,6 @@ int main()
         {
             if(phased)
             {
-                superhero.clear();
                 sidekick.clear();
                 phased=false;
             }
@@ -44,13 +43,12 @@ int main()
             new_ops.command='a';
             new_ops.argument=w;
             superhero.push_back(new_ops);
-            cout << "append: " << w << ": " << s << endl;
+            //cout << "append: " << w << ": " << s << endl;
         }
         else if(command=='e')
         {
             if(phased)
             {
-                superhero.clear();
                 sidekick.clear();
                 phased=false;
             }
@@ -63,13 +61,14 @@ int main()
             superhero.push_back(new_ops);
 
             s.erase(s.end()-k,s.end());
-            cout << "erase: " << new_ops.argument << ": " << s << endl;
+            //cout << "erase: " << new_ops.argument << ": " << s << endl;
         }
         else if(command=='g')
         {
             int k;
             cin >> k;
-            cout << k << ": " << s << ": " << s[k] << endl;
+            //cout << k << ": " << s << ": " << s[k] << endl;
+            cout << s[k] << endl;
         }
         else if(command=='u')
         {
@@ -89,7 +88,7 @@ int main()
                     s = s+undoing.argument;
                 }
             }
-            cout << "undo: " << s << endl;
+            //cout << "undo: " << s << endl;
         }
         else if(command=='r')
         {
@@ -109,7 +108,7 @@ int main()
                     s.erase(s.end()-redoing.argument.size(),s.end());
                 }
             }
-            cout << "redo: " << s << endl;
+            //cout << "redo: " << s << endl;
         }
     }
 }
