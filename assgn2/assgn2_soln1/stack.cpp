@@ -40,7 +40,7 @@ template <class T>
 int stack<T>::top(T* head_element)
 {
     if(head==0)
-        return 0;
+        return -1;
     else
     {
         *head_element=*(head->element);
