@@ -1,105 +1,114 @@
+#include <iostream>
 #include "list.hpp"
+#include "node.hpp"
+using namespace std;
 
-Node* insert(Node* head, int val, int pos)
+Node* insert(Node* head, int val, int pos) 
 {
-    //the new node
-    Node* the_new_node = new Node(val);
-    
-    //find the node we are going to replace
-    Node* iter_ptr = head;
-
-    //insert at HEAD
+    Node* point = head;
+    Node* new_node = new Node(val);
+    for(int i=1; i<pos; i++)
+        point = point->getNext();
     if(pos==0)
     {
-        the_new_node->setNext(head);
-        return the_new_node;
+        new_node->setNext(head);
+        return new_node;
     }
     else
     {
-        for(int i = 0;i<pos-1;i++)
-            iter_ptr = iter_ptr->getNext();
-
-        //insertion procedure
-        the_new_node->setNext(iter_ptr->getNext());
-        iter_ptr->setNext(the_new_node);
+        new_node->setNext(point->getNext());
+        point->setNext(new_node);
         return head;
     }
 }
 
 Node* remove(Node* head, int pos)
 {
-    //find the node we are going to replace
-    Node* iter_ptr = head;
-
-    if(pos==0)
+    Node *pointing = head;
+    for(int i=1; i<pos; i++)
     {
-        return head->getNext();
+        pointing = pointing->getNext();
     }
-    else 
+    if (pos==0)
     {
-        for(int i = 0;i<pos-1;i++)
-            iter_ptr = iter_ptr->getNext();
-
-        //insertion procedure
-        iter_ptr->setNext(iter_ptr->getNext()->getNext());
+        pointing = head->getNext();
+        free(head);
+        return pointing;
+    }
+    else
+    {
+        Node *temp_node = pointing->getNext();
+        pointing->setNext(temp_node->getNext());
+        free(temp_node);
         return head;
     }
 }
 
 int size(Node* head)
 {
-    int i = 0;
-    for(Node*iter_ptr=head;iter_ptr!=NULL;iter_ptr=iter_ptr->getNext())
-        i++;
-    return i;
+	Node *next_up = head;
+	int count=0;
+	while(next_up!=NULL)
+	{
+		next_up = next_up->getNext();
+        count++;
+	}
+	return count;	
 }
+
 
 Node* reverse(Node* head)
 {
-    //suppose there were only two elements
-    if(size(head)==0)
-        return head;
-    else if(size(head)<=2)
-    {
-        head->getNext()->setNext(head);
-        head = head->getNext();
-        return head;
-    }
-    else
-    {
-        //the recursion the man
-        Node* the_new_head = reverse(head->getNext());
-        head->getNext()->setNext(head);
-        head->setNext(NULL);
-        head = the_new_head;
-        return head;
-    }
+   if (head==NULL)
+   {
+       return NULL;
+   }
+   else
+   {
+       Node *pointer = head;
+       Node *head_2 = new Node(pointer->getVal());
+       for (int i=0; i<size(head)-1; i++)
+       {
+           pointer = pointer->getNext();
+           head_2 = insert(head_2, pointer->getVal(), 0);
+       }
+       return head_2;
+   }
 }
 
 int cycle_size(Node* head)
 {
-    /* Floyd's cycle finding algorithm
-     * start with two pointers
-     * increment the first by one, second by two
-     * if they meet, cycle found
-     * now traverse cycle once for length
-     */
-
-    int length = 0;
-    Node *ptr1=head,*ptr2=head;
-    while(ptr1!=NULL && ptr2!=NULL)
-    {
-        ptr1 = ptr1->getNext();
-        ptr2 = ptr2->getNext()->getNext();
-        if(ptr1==ptr2)
-        {
-            do
-            {
-                ptr2=ptr2->getNext();
-                length++;
-            } while(ptr1!=ptr2);
-            break;
-        }
-    }    
-    return length;
+	int cnt_1=0;
+	int cnt_2=0;
+	int flag = 0;
+	Node *p= head; 
+	Node *q=head;
+	while(p->getNext()!=0)
+	{
+		p =(p->getNext());
+		cnt_1++;
+		q = head;
+		cnt_2 = 0;
+		while(q!=p && p->getNext()!=q)
+		{
+			q=q->getNext();
+			cnt_2++;
+			if (p->getNext()==q)
+			{
+				flag++;
+			}	
+		}
+		if (flag>0)
+		{
+			break;
+		}
+	}
+	if (flag==0)
+	{
+		return 0;
+	}
+	else {return cnt_1-cnt_2+1;}
 }
+
+
+
