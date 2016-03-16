@@ -2,12 +2,19 @@
 #include "minMaxHeap.hpp"
 using namespace std;
 
+class FivePred:public Predicate<int>
+{
+    bool toDelete(int a)
+    {
+        return ((a%5==0));
+    }
+};
+
 int main()
 {
     int n;
     cin >> n;
     MinMaxHeap<int> foo;
-    pred predObj;
     int temp;
     for(int i = 0;i<n;i++)
     {
@@ -23,6 +30,7 @@ int main()
     foo.print();
     foo.deleteMin();
     foo.print();
+    FivePred predObj;
     foo.deleteElems(predObj);
     foo.print();
     return 0;

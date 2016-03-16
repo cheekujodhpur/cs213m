@@ -12,18 +12,12 @@ void swap(T &a,T &b)
 }
 
 
-class pred
+template<class T>
+class Predicate
 {
     public:
-    bool toDelete(int elem);
+    virtual bool toDelete(T elem){};
 };
-
-bool pred::toDelete(int elem)
-{
-    if(elem%5==0)
-        return false;
-    else return true;
-}
 
 template<class T>
 class MinMaxHeap
@@ -80,12 +74,12 @@ class MinMaxHeap
         /*Return the maximum of the objects */
         T getMax();
         /*The pred class defines a function toDelete with the signature bool toDelete(T). The function deleteElems then will delete from the min-max heap, all the elements such that toDelete returns true when called on them*/
-        void deleteElems(pred predObject);
+        void deleteElems(Predicate<T> &predObject);
         void print();
 };
 
 template<class T>
-void MinMaxHeap<T>::deleteElems(pred predObject)
+void MinMaxHeap<T>::deleteElems(Predicate<T> &predObject)
 {
     MinMaxHeap<int> *second = new MinMaxHeap<int>;
     for(int i = 1;i<=size;i++)
@@ -261,6 +255,11 @@ T MinMaxHeap<T>::getMin()
 template<class T>
 T MinMaxHeap<T>::getMax()
 {
+    if(size==1)
+        return heap[1];
+    else if(size==2)
+        return heap[2];
+    else
     return (heap[2]>heap[3]?heap[2]:heap[3]);
 }
 
